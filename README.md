@@ -1,4 +1,4 @@
-# 🛡️ Drawdown Guard
+# Drawdown Guard
 
 An autonomous AI trading agent that checks a portfolio every weekday against its client's downside limit, and steps in with an options overlay the moment it doesn't.
 
@@ -6,11 +6,11 @@ Investors can say how much they can afford to lose in the worst scenario. But po
 
 🌐 **[See It Live](https://ol1ak5.github.io/drawdown-guard/)** · 📓 **[Read the Journal](journal/)** · 📄 **[Read the One-pager](ONE-PAGER.md)**
 
-## 🎯 The Problem
+## The Problem
 
 Just knowing a loss tolerance limit is not a loss control. Investors can decide how much downside they can accept. But once the portfolio is built, that number doesn't enforce itself. The main challenge is not knowing what the market will do next. It's keeping the portfolio aligned with the risk limit the client already chose. That's exactly what Drawdown Guard is built to solve.
 
-## 💡 The Solution
+## The Solution
 
 Drawdown Guard stands between the client's promise and the portfolio, turning a downside limit into a continuously monitored constraint the portfolio is checked against.
 
@@ -20,7 +20,7 @@ Every weekday, the agent wakes up and asks one question:
 If yes, the agent records the result and stays on guard.
 If no, it measures the existing gap, and evaluates the available options on today's actual option chain to bring the portfolio back within its mandate.
 
-## 👤 One Client, One Promise
+## One Client, One Promise
 
 For this hackathon, we turn the problem into a concrete situation.
 
@@ -64,7 +64,7 @@ The portfolio is intentionally not static. A client who never touches their allo
 | Sep 2 | 👤 Sold all 900 XLF | 🤖 9 puts recognised as redundant released at $3.15 |
 | Sep 3 | 👤 Bought 100 AAPL | 🤖 AAPL hedged same cycle put bought at $26.55 |
 
-## 🔄 The Agent Loop
+## The Agent Loop
 
 ```mermaid
 flowchart TD
@@ -97,7 +97,7 @@ flowchart TD
     JOURNAL["7️⃣ JOURNAL<br/>LLM · THE CLIENT'S NOTE"] --> END([Commit and stop])
 ```
 
-## ⚙️ How the Agent Actually Works
+## How the Agent Actually Works
 
 Seven steps presented as five nodes in the LangGraph cycle. Every half hour while the market is open. Fully autonomous.
 
@@ -111,7 +111,7 @@ Seven steps presented as five nodes in the LangGraph cycle. Every half hour whil
 | 6️⃣ | **Execute** | Sends the approved orders, then reads back what the broker actually did | `execute` |
 | 7️⃣ | **Journal** | Writes down what happened and why, in plain language, with an LLM | `journal` |
 
-## 🚩 Where the AI is
+## Where the AI is
 
 The deterministic risk engine calculates the numbers. The LLM reasons over the decisions that require judgment.
 
@@ -150,7 +150,7 @@ Every protection choice records:
 
 After the orders have gone and their fills have been read back, the LLM writes the paragraph a client reads. Nothing is left to decide by then, so it can be unclear but it cannot be expensive.
 
-## 🔗 The Chain of Decision
+## The Chain of Decision
 
 **1️⃣ How much loss can the client tolerate?** 
 
@@ -313,7 +313,7 @@ The portfolio can become uncovered for several reasons:
 | **Hedge aged** | The market moved and the strike that used to hold the floor no longer reaches it |
 | **Coverage expired** | Coverage silently ended. Nothing but recomputation notices |
 
-## 🔌 Alpaca Trading API and MCP Server
+## Alpaca Trading API and MCP Server
 
 Drawdown Guard uses the Alpaca Trading API and Alpaca MCP Server to read the account, positions, market data and option chain, submit orders, and reconcile execution.
 
@@ -329,7 +329,7 @@ Paper account
 
 The agent decides what should happen. MCP provides the controlled interface to the broker. The deterministic Gate remains the final trading boundary.
 
-## 🛑 How to Stop the Agent
+## How to Stop the Agent
 
 It is an autonomous agent trading an account on a schedule, so there has to be a way to stop it from a phone, without a laptop and without touching the code:
 
@@ -338,7 +338,7 @@ touch HALT && git add HALT && git commit -m "halt" && git push
 ```
 **It stops the agent, not the protection.** Every position stays exactly where it is. Hedges already bought keep working. A stop button that liquidated the client's protection would disarm the portfolio at the precise moment somebody was worried enough to press it.
 
-## 🔧 What We Improved during the Hackthon Week
+## What We Improved during the Hackthon Week
 
 | When | What we noticed | How we found out | The improvement |
 |---|---|---|---|
@@ -352,7 +352,7 @@ touch HALT && git add HALT && git commit -m "halt" && git push
 | Sep 2 | `release` recommended handing the hedge back, but no order could be built | The liquidity filter left one tradable strike out of sixty-seven | Close against the unfiltered chain - a filter for buying is not a rule for leaving |
 | Sep 2 | The gate refused the closing order | Assignment probability read on a contract the account was long, not short | Nobody can be assigned an option they own; the check no longer asks the question |
 
-## ▶️ Try It
+## Try It
 
 ```bash
 uv sync
@@ -365,7 +365,7 @@ uv run pytest
 
 🔐 `ALPACA_PAPER_TRADE=true` is a hard interlock. The program refuses to start without it. This has never traded real money.
 
-## 🏁 Main Tracks
+## Main Tracks
 
 **Track 03 - Hedging & Risk Protection Agents**
 
@@ -378,7 +378,7 @@ Built directly against the four agent types this track names:
 | 🎯 **Collar strategy** | Priced on every cycle against the put, and taken when the call is the richer leg. It has not been taken yet: on this book the call has priced below the put on every reading, so buying outright won 37 times out of 37. The journal records every declined collar and the volatilities that declined it |
 | ♻️ **Hedge rebalancers for equity portfolios** | Adds protection when risk is uncovered and hands it back on a margin band. The client's sale on day 4 and purchase on day 5 are what exercise both halves |
 
-## 🧩 Built With
+## Built With
 
 | Stack | Used for |
 |---|---|
@@ -394,7 +394,7 @@ Built directly against the four agent types this track names:
 | **Cloudflare Workers** | Asks for all thirteen cycles on time |
 | **Python 3.11** | The language the project runs on |
 
-## 📄 License
+## License
 
 Copyright © 2026 Olga Aksenova.
 
